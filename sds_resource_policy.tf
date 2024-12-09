@@ -34,3 +34,27 @@
     "Resource": "arn:aws:events:us-east-1:832921726877:event-bus/default"
   }]
 }
+
+
+use this below piece for that.
+Explanation:
+The Principal is set to * (any entity) because we’re using a condition to filter access.
+The aws:PrincipalOrgID condition ensures that only accounts in the specified AWS Organization (with ID o-xxxxxxxxxx) can assume the role.
+
+
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Sid": "AllowAWS2Org",
+    "Effect": "Allow",
+    "Principal": "*",
+    "Action": "events:PutEvents",
+    "Resource": "arn:aws:events:us-east-1:832921726877:event-bus/default",
+    "Condition": {
+      "StringEquals": {
+        "aws:PrincipalOrgID": "o-xxxxxxxxxx"  // Replace with your AWS Organization ID
+      }
+    }
+  }]
+}
+
